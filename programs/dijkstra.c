@@ -7,7 +7,9 @@ void dijkstra(int cost[MAX][MAX], int n, int src) {
         dist[i] = cost[src][i];
         visited[i] = 0;
     }
+
     dist[src] = 0;
+
     visited[src] = 1;
     for (int count = 0; count < n - 1; count++) {
         int min_dist = INF, u = -1;
@@ -17,6 +19,7 @@ void dijkstra(int cost[MAX][MAX], int n, int src) {
                 u = i;
             }
         }
+
         if (u == -1) break;
         visited[u] = 1;
         for (int v = 0; v < n; v++) {
@@ -25,6 +28,7 @@ void dijkstra(int cost[MAX][MAX], int n, int src) {
             }
         }
     }
+
     printf("Shortest distances from source %d:\n", src);
     for (int i = 0; i < n; i++) {
         printf("To node %d: ", i);
