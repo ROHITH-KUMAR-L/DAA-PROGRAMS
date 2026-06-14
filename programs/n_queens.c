@@ -1,40 +1,84 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
-int board[20];
-int count = 0;
-void print(int n) {
-    printf("\nSolution %d:\n", ++count);
-    for (int i = 1; i <= n; i++) {
-        for (int j = 1; j <= n; j++) {
-            if (board[i] == j) printf(" Q ");
-            else printf(" - ");
+
+#define MAX 20
+
+int board[MAX][MAX];
+int solutionCount = 0;
+
+// Function to check if a queen can be placed safely
+int isSafe(int row, int col, int n) {
+    int i, j;
+
+    // Check same column
+    for (i = 0; i < row; i++) {
+        if (board[i][col] == 1)
+            return 0;
+    }
+
+    // Check upper-left diagonal
+    for (i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--) {
+        if (board[i][j] == 1)
+            return 0;
+    }
+
+    // Check upper-right diagonal
+    for (i = row - 1, j = col + 1; i >= 0 && j < n; i--, j++) {
+        if (board[i][j] == 1)
+            return 0;
+    }
+
+    return 1;
+}
+
+// Function to print the board configuration
+void printBoard(int n) {
+    int i, j;
+
+    solutionCount++;
+    printf("\nSolution %d:\n", solutionCount);
+
+    for (i = 0; i < n; i++) {
+        for (j = 0; j < n; j++) {
+            if (board[i][j] == 1)
+                printf("Q ");
+            else
+                printf(". ");
         }
         printf("\n");
     }
 }
-int place(int row, int column) {
-    for (int i = 1; i <= row - 1; i++) {
-        if (board[i] == column) return 0;
-        else if (abs(board[i] - column) == abs(i - row)) return 0;
+
+// Recursive function to solve N-Queens
+void solve(int row, int n) {
+    int col;
+
+    if (row == n) {
+        printBoard(n);
+        return;
     }
-    return 1;
-}
-void queen(int row, int n) {
-    for (int column = 1; column <= n; column++) {
-        if (place(row, column)) {
-            board[row] = column;
-            if (row == n) print(n);
-            else queen(row + 1, n);
+
+    for (col = 0; col < n; col++) {
+        if (isSafe(row, col, n)) {
+            board[row][col] = 1;
+            solve(row + 1, n);
+            board[row][col] = 0;   // Backtrack
         }
     }
 }
+
 int main() {
     int n;
-    printf("Enter number of Queens: ");
-    if (scanf("%d", &n) != 1) return 1;
-    queen(1, n);
-    if (count == 0) printf("No solutions found.\n");
-    else printf("\nTotal solutions: %d\n", count);
+
+    printf("Enter the number of queens: ");
+    scanf("%d", &n);
+
+    solve(0, n);
+
+    if (solutionCount == 0)
+        printf("No solution exists.\n");
+    else
+        printf("\nTotal solutions = %d\n", solutionCount);
+
     return 0;
 }
