@@ -7,64 +7,28 @@ const HOST = '0.0.0.0';
 
 // Mapping of route path to file name
 const fileMap = {
-    '/1.1': 'find_max.c',
-    '/1.2': 'linear_bubble.c',
-    '/1.3': 'distinct_elements.c',
-    '/1.4': 'matrix_mult.c',
-    '/2.1': 'factorial.c',
-    '/2.2': 'fibonacci.c',
-    '/2.3': 'decimal_to_binary.c',
-    '/2.4': 'tower_of_hanoi.c',
-    '/2.5': 'recursive_linear_search.c',
-    '/2.6': 'recursive_binary_search.c',
-    '/3.1': 'merge_sort.c',
-    '/3.2': 'quicksort.c',
-    '/4.1': 'bfs.c',
-    '/4.2': 'topological_dfs.c',
-    '/5.1': 'heapsort.c',
-    '/5.2': 'uniqueness_presorting.c',
-    '/6.1': 'horspool.c',
-    '/6.2': 'boyer_moore.c',
-    '/7.1': 'warshall.c',
-    '/7.2': 'floyd.c',
-    '/7.3': 'knapsack_memory.c',
-    '/8.1': 'dijkstra.c',
-    '/8.2': 'prim.c',
-    '/9.1': 'n_queens.c',
-    '/9.2': 'subset_sum.c',
-    '/10.1': 'tsp.c',
-    '/10.2': 'assignment.c'
+    '/1': 'merge_sort.c',
+    '/2': 'topological_dfs.c',
+    '/3': 'heapsort.c',
+    '/4': 'horspool.c',
+    '/5': 'warshall_floyd.c',
+    '/6': 'knapsack_memory.c',
+    '/7': 'dijkstra.c',
+    '/8': 'prim.c',
+    '/9': 'n_queens.c'
 };
 
 // Program names for UI dashboard
 const programNames = {
-    '/1.1': 'Finding maximum element in an array',
-    '/1.2': 'Linear search and Bubble sort',
-    '/1.3': 'Determine whether all elements in an array are unique/distinct',
-    '/1.4': 'Matrix multiplication using brute-force approach',
-    '/2.1': 'Factorial of a given number (recursive)',
-    '/2.2': 'Nth number in the Fibonacci series (recursive)',
-    '/2.3': 'Binary representation of a given decimal integer (recursive)',
-    '/2.4': 'Tower of Hanoi problem (recursive)',
-    '/2.5': 'Recursive linear search',
-    '/2.6': 'Recursive binary search',
-    '/3.1': 'Merge sort',
-    '/3.2': 'Quicksort',
-    '/4.1': 'Breadth First Search (BFS)',
-    '/4.2': 'Topological sorting using Depth First Search (DFS)',
-    '/5.1': 'Heapsort',
-    '/5.2': 'Checking element uniqueness after presorting',
-    '/6.1': "Horspool's string matching algorithm",
-    '/6.2': "Boyer-Moore's string matching algorithm",
-    '/7.1': "Warshall's transitive closure algorithm",
-    '/7.2': "Floyd's all-pairs shortest paths algorithm",
-    '/7.3': 'Knapsack problem solution using memory function',
-    '/8.1': "Dijkstra's shortest paths algorithm",
-    '/8.2': "Prim's minimum spanning tree algorithm",
-    '/9.1': "N-Queen's problem (backtracking)",
-    '/9.2': 'Subset-sum problem (backtracking)',
-    '/10.1': 'Travelling Salesperson Problem (branch & bound)',
-    '/10.2': 'Assignment problem (branch & bound)'
+    '/1': 'Merge sort with time complexity analysis',
+    '/2': 'Topological sorting using Depth First Search (DFS)',
+    '/3': 'Heapsort',
+    '/4': "Horspool's algorithm",
+    '/5': "Warshall & Floyd's algorithms",
+    '/6': 'Knapsack problem solution using memory function',
+    '/7': "Dijkstra's shortest paths algorithm",
+    '/8': "Prim's minimum spanning tree algorithm",
+    '/9': "N-Queen's problem (backtracking)"
 };
 
 // Generate HTML dashboard dynamically
@@ -74,6 +38,7 @@ function getDashboardHtml(reqHost) {
     
     Object.entries(programNames).forEach(([route, desc]) => {
         const curlCmd = `curl -X POST http://${hostIp}${route} --output ${fileMap[route]}`;
+        const routeId = route.replace('/', '');
         rowsHtml += `
         <tr>
             <td class="route-cell">${route}</td>
@@ -81,8 +46,8 @@ function getDashboardHtml(reqHost) {
             <td class="file-cell"><code>${fileMap[route]}</code></td>
             <td class="cmd-cell">
                 <div class="code-wrapper">
-                    <code id="cmd-${route.replace('.', '-')}">${curlCmd}</code>
-                    <button class="copy-btn" onclick="copyToClipboard('cmd-${route.replace('.', '-')}')">
+                    <code id="cmd-${routeId}">${curlCmd}</code>
+                    <button class="copy-btn" onclick="copyToClipboard('cmd-${routeId}')">
                         <svg xmlns="http://www.w3.org/2000/svg" height="16" viewBox="0 -960 960 960" width="16" fill="currentColor"><path d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0-33-23.5-56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-560h80v560h440v80H200Zm160-240v-480 480Z"/></svg>
                     </button>
                 </div>
